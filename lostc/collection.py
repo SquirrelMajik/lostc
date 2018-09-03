@@ -58,7 +58,7 @@ def divide_dict(a_dict, divide_func):
     return suit, not_suit
 
 
-def classfy(collection, *filters, **kfilters):
+def classify(collection, *filters, **kfilters):
     '''Classfy a list or dict like object. Multiple filters in one loop.
 
     - collection: list or dict like object
@@ -71,20 +71,20 @@ def classfy(collection, *filters, **kfilters):
     data = [1, 2, 3]
     m1 = lambda x: x > 1
     m2 = lambda x: x > 2
-    classfy(data, m1, m2)         ->   [2, 3], [3]
-    classfy(data, m1=m1, m2=m2)   ->   {'m1': [2, 3], 'm2': [3]}
+    classify(data, m1, m2)         ->   [2, 3], [3]
+    classify(data, m1=m1, m2=m2)   ->   {'m1': [2, 3], 'm2': [3]}
 
     data = {'a': 1, 'b': 2}
     dm1 = lambda k, v: v > 1
     dm2 = lambda k, v: v > 2
-    classfy(data, dm1, dm2)           ->   {'b': 2}, {}
-    classfy(data, dm1=dm1, dm2=dm2)   ->   {'dm1': {'b': 2}, 'dm2': {}}
+    classify(data, dm1, dm2)           ->   {'b': 2}, {}
+    classify(data, dm1=dm1, dm2=dm2)   ->   {'dm1': {'b': 2}, 'dm2': {}}
     '''
-    func = classfy_dict if isinstance(collection, dict) else classfy_list
+    func = classify_dict if isinstance(collection, dict) else classify_list
     return func(collection, *filters, **kfilters)
 
 
-def classfy_dict(a_dict, *filters, **kfilters):
+def classify_dict(a_dict, *filters, **kfilters):
     '''Classfy a dict like object. Multiple filters in one loop.
 
     - a_dict: dict like object
@@ -97,18 +97,18 @@ def classfy_dict(a_dict, *filters, **kfilters):
     data = {'a': 1, 'b': 2}
     dm1 = lambda k, v: v > 1
     dm2 = lambda k, v: v > 2
-    classfy_dict(data, dm1, dm2)           ->   {'b': 2}, {}
-    classfy_dict(data, dm1=dm1, dm2=dm2)   ->   {'dm1': {'b': 2}, 'dm2': {}}
+    classify_dict(data, dm1, dm2)           ->   {'b': 2}, {}
+    classify_dict(data, dm1=dm1, dm2=dm2)   ->   {'dm1': {'b': 2}, 'dm2': {}}
     '''
     if kfilters:
-        return classfy_dict_kf(a_dict, **kfilters)
+        return classify_dict_kf(a_dict, **kfilters)
     elif filters:
-        return classfy_dict_f(a_dict, *filters)
+        return classify_dict_f(a_dict, *filters)
     else:
         return dict(a_dict)
 
 
-def classfy_dict_kf(a_dict, **kfilters):
+def classify_dict_kf(a_dict, **kfilters):
     '''Classfy a dict like object. Multiple filters in one loop.
 
     - a_dict: dict like object
@@ -120,17 +120,17 @@ def classfy_dict_kf(a_dict, **kfilters):
     data = {'a': 1, 'b': 2}
     dm1 = lambda k, v: v > 1
     dm2 = lambda k, v: v > 2
-    classfy_dict_kf(data, dm1=dm1, dm2=dm2)   ->   {'dm1': {'b': 2}, 'dm2': {}}
+    classify_dict_kf(data, dm1=dm1, dm2=dm2)   ->   {'dm1': {'b': 2}, 'dm2': {}}
     '''
     results = defaultdict(dict)
     for key, value in a_dict.items():
         for name, filter_func in kfilters.items():
             if filter_func(key, value):
                 results[name][key] = value
-    return dict(results)
+    return results
 
 
-def classfy_dict_f(a_dict, *filters):
+def classify_dict_f(a_dict, *filters):
     '''Classfy a dict like object. Multiple filters in one loop.
 
     - a_dict: dict like object
@@ -142,7 +142,7 @@ def classfy_dict_f(a_dict, *filters):
     data = {'a': 1, 'b': 2}
     dm1 = lambda k, v: v > 1
     dm2 = lambda k, v: v > 2
-    classfy_dict_f(data, dm1, dm2)   ->   {'b': 2}, {}
+    classify_dict_f(data, dm1, dm2)   ->   {'b': 2}, {}
     '''
     results = tuple({} for i in range(len(filters)))
     for key, value in a_dict.items():
@@ -152,7 +152,7 @@ def classfy_dict_f(a_dict, *filters):
     return results
 
 
-def classfy_list(a_list, *filters, **kfilters):
+def classify_list(a_list, *filters, **kfilters):
     '''Classfy a list like object. Multiple filters in one loop.
 
     - collection: list like object
@@ -165,18 +165,18 @@ def classfy_list(a_list, *filters, **kfilters):
     data = [1, 2, 3]
     m1 = lambda x: x > 1
     m2 = lambda x: x > 2
-    classfy(data, m1, m2)         ->   [2, 3], [3]
-    classfy(data, m1=m1, m2=m2)   ->   {'m1': [2, 3], 'm2': [3]}
+    classify(data, m1, m2)         ->   [2, 3], [3]
+    classify(data, m1=m1, m2=m2)   ->   {'m1': [2, 3], 'm2': [3]}
     '''
     if kfilters:
-        return classfy_list_kf(a_list, **kfilters)
+        return classify_list_kf(a_list, **kfilters)
     elif filters:
-        return classfy_list_f(a_list, *filters)
+        return classify_list_f(a_list, *filters)
     else:
         return list(a_list)
 
 
-def classfy_list_kf(a_list, **kfilters):
+def classify_list_kf(a_list, **kfilters):
     '''Classfy a list like object. Multiple filters in one loop.
 
     - collection: list like object
@@ -188,17 +188,17 @@ def classfy_list_kf(a_list, **kfilters):
     data = [1, 2, 3]
     m1 = lambda x: x > 1
     m2 = lambda x: x > 2
-    classfy(data, m1=m1, m2=m2)   ->   {'m1': [2, 3], 'm2': [3]}
+    classify(data, m1=m1, m2=m2)   ->   {'m1': [2, 3], 'm2': [3]}
     '''
     results = defaultdict(list)
     for item in a_list:
         for name, filter_func in kfilters.items():
             if filter_func(item):
                 results[name].append(item)
-    return dict(results)
+    return results
 
 
-def classfy_list_f(a_list, *filters):
+def classify_list_f(a_list, *filters):
     '''Classfy a list like object. Multiple filters in one loop.
 
     - collection: list like object
@@ -210,7 +210,7 @@ def classfy_list_f(a_list, *filters):
     data = [1, 2, 3]
     m1 = lambda x: x > 1
     m2 = lambda x: x > 2
-    classfy(data, m1, m2)   ->   [2, 3], [3]
+    classify(data, m1, m2)   ->   [2, 3], [3]
     '''
     results = tuple([] for i in range(len(filters)))
     for item in a_list:
@@ -489,15 +489,15 @@ if __name__ == '__main__':
 
     data = range(10)
     pp(divide(data, lambda x: x > 5))
-    pp(classfy(data, lambda x: x > 3, lambda x: x > 5))
-    pp(classfy(data, gt3=lambda x: x > 3, gt5=lambda x: x > 5))
-    pp(classfy(data, lambda x: x > 1, gt3=lambda x: x > 3))
+    pp(classify(data, lambda x: x > 3, lambda x: x > 5))
+    pp(classify(data, gt3=lambda x: x > 3, gt5=lambda x: x > 5))
+    pp(classify(data, lambda x: x > 1, gt3=lambda x: x > 3))
 
     data = dict(zip(urange.char_range('a', 'z'), range(26)))
     pp(divide(data, lambda k, v: v > 5))
-    pp(classfy(data, lambda k, v: v > 3, lambda k, v: v > 5))
-    pp(classfy(data, gt3=lambda k, v: v > 3, gt5=lambda k, v: v > 5))
-    pp(classfy(data, lambda k, v: v > 1, gt3=lambda k, v: v > 3))
+    pp(classify(data, lambda k, v: v > 3, lambda k, v: v > 5))
+    pp(classify(data, gt3=lambda k, v: v > 3, gt5=lambda k, v: v > 5))
+    pp(classify(data, lambda k, v: v > 1, gt3=lambda k, v: v > 3))
 
     data = [(1, 2), (2, 1), (2, 3)]
     pp(unique(data, lambda x: tuple(sorted(x))))
