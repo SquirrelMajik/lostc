@@ -28,8 +28,6 @@ setup(
     zip_safe=False,
     include_package_data=True,
     platforms="any",
-    install_requires=INSTALL_REQUIRES,
-    extras_require=EXTRAS_REQUIRES,
     classifiers=[
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
