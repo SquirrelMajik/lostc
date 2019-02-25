@@ -1,11 +1,11 @@
-'''lostc.combine
+"""lostc.combine
 
 Global combine functions
-'''
+"""
 
 
 def combination(items, sequential=True):
-    '''Generate a combination.
+    """Generate a combination.
 
     - items: a list like object
     - sequential: need sequential? True/False
@@ -16,7 +16,7 @@ def combination(items, sequential=True):
     data = [1, 2]
     combination(data)                     ->   {(1, 2), (1, 1), (2, 1), (2, 2)}
     combination(data, sequential=False)   ->   {(1, 2), (1, 1), (2, 2)}
-    '''
+    """
     if sequential:
         return {tuple(item) for item in product(items, repeat=2)}
     else:
@@ -24,7 +24,7 @@ def combination(items, sequential=True):
 
 
 def product(*lists, repeat=1):
-    '''Generate a product.
+    """Generate a product.
 
     - lists: a list of list like object
     - repeat: the repeat number of lists
@@ -35,7 +35,7 @@ def product(*lists, repeat=1):
     list(product([1, 2], [2, 3]))   ->   [(1, 2), (1, 3), (2, 2), (2, 3)]
     list(product([1, 2]))           ->   [(1,), (2,)]
     list(product())                 ->   [()]
-    '''
+    """
 
     def _product(lists):
         if not lists:
@@ -43,12 +43,12 @@ def product(*lists, repeat=1):
         else:
             for item in lists[0]:
                 for rest in _product(lists[1:]):
-                    yield (item, ) + rest
+                    yield (item,) + rest
 
     return _product(lists * repeat)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from pprint import pprint as pp
 
     pp(list(product([1, 2, 3], [2, 3, 4])))
